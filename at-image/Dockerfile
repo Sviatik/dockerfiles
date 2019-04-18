@@ -20,4 +20,4 @@ RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp
 RUN npm install -g npm@latest && npm -v
 
 COPY wrap_chrome_binary /opt/bin/wrap_chrome_binary
-RUN /opt/bin/wrap_chrome_binary
+RUN chmod +x /opt/bin/wrap_chrome_binary && /opt/bin/wrap_chrome_binary
