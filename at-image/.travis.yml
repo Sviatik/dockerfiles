@@ -1,0 +1,7 @@
+services:
+  - docker
+
+script:
+  - docker login -u="$DLOGIN" -p="$DPASSWORD"
+  - docker build -t 732342/images:at-image .
+  - docker push 732342/images:at-image
