@@ -11,6 +11,8 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 	&& apt-get -y install --no-install-recommends \
 		nodejs \
     	${CHROME_VERSION:-google-chrome-stable} \
+    	g++ \
+    	build-essential \
 	&& rm /etc/apt/sources.list.d/google-chrome.list \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
