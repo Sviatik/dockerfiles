@@ -13,6 +13,7 @@ jobs:
     - name: Login to GitHub Package Registry
       run: echo "${{ secrets.SVIAT_DOCKER_PASSWORD }}" | docker login -u "${{ secrets.SVIAT_DOCKER_USERNAME }}" --password-stdin
     - name: Build the Docker image
-      run: docker build . --file at-image/Dockerfile --tag  sviatstetsiak/auto-test:jdk11-dotnet2.2-nodejs8-$(date +%Y-%m-%d)
+      run: docker build . --file at-image/Dockerfile --tag  sviatstetsiak/auto-test:jdk11-dotnet2.2-nodejs8-$(date +%Y-%m-%d) --tag sviatstetsiak/auto-test:latest
     - name: Push the Docker image to the registry
       run: docker push sviatstetsiak/auto-test:jdk11-dotnet2.2-nodejs8-$(date +%Y-%m-%d)
+      run: docker push sviatstetsiak/auto-test:latest
