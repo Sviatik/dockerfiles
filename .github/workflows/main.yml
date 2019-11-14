@@ -16,4 +16,5 @@ jobs:
       run: docker build . --file dotnet-sdk/Dockerfile --tag  sviatstetsiak/dotnet-sdk:zip-$(date +%Y-%m-%d) --tag sviatstetsiak/dotnet-sdk:latest
     - name: Push the Docker image to the registry
       run: docker push sviatstetsiak/dotnet-sdk:zip-$(date +%Y-%m-%d)
+    - name: Push the latest tag to the registry
       run: docker push sviatstetsiak/dotnet-sdk:latest

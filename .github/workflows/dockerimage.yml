@@ -16,4 +16,5 @@ jobs:
       run: docker build . --file at-image/Dockerfile --tag  sviatstetsiak/auto-test:jdk11-dotnet2.2-nodejs8-$(date +%Y-%m-%d) --tag sviatstetsiak/auto-test:latest
     - name: Push the Docker image to the registry
       run: docker push sviatstetsiak/auto-test:jdk11-dotnet2.2-nodejs8-$(date +%Y-%m-%d)
+    - name: Push latest tag to the registry
       run: docker push sviatstetsiak/auto-test:latest
