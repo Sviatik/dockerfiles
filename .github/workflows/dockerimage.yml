@@ -1,6 +1,9 @@
 name: Build auto test image
 
-on: [push]
+on:
+  push:
+    paths:
+    - 'at-image/*'
 
 jobs:
   build:
