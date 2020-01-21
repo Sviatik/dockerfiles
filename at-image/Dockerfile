@@ -1,7 +1,7 @@
 FROM openjdk:11
 
 ARG CHROME_VERSION="google-chrome-stable"
-ARG NODE_VERSION='8'
+ARG NODE_VERSION='10'
 
 ENV ASPNETCORE_URLS=http://+:80 \
     # Enable detection of running in a container
