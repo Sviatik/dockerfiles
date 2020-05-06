@@ -1,4 +1,4 @@
-name: Build dotnet image
+name: az-build-agent
 
 on:
   push:
