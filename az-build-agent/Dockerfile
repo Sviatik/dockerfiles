@@ -32,7 +32,7 @@ RUN curl -o azcopy_v10.tar.gz https://azcopyvnext.azureedge.net/release20200124/
     && rm -f azcopy_v10.tar.gz \
     && chmod +x /usr/local/bin/azcopy
 
-# Install Azure CLI
+# Install Azure Cli
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 # Install kubectl
