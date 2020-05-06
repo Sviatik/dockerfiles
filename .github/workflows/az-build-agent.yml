@@ -13,7 +13,7 @@ jobs:
     - name: Login to GitHub Package Registry
       run: echo "${{ secrets.SVIAT_DOCKER_PASSWORD }}" | docker login -u "${{ secrets.SVIAT_DOCKER_USERNAME }}" --password-stdin
     - name: Build the Docker image
-      run: docker build . --file dotnet-sdk/Dockerfile --tag  sviatstetsiak/az-build-agent:$(date +%Y-%m-%d) --tag sviatstetsiak/az-build-agent:latest
+      run: docker build . --file az-build-agent/Dockerfile --tag  sviatstetsiak/az-build-agent:$(date +%Y-%m-%d) --tag sviatstetsiak/az-build-agent:latest
     - name: Push the Docker image to the registry
       run: docker push sviatstetsiak/az-build-agent:$(date +%Y-%m-%d)
     - name: Push the latest tag to the registry
