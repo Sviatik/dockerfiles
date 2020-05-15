@@ -1,0 +1,20 @@
+name: swiss-knife
+
+on:
+  push:
+    paths:
+    - 'swiss-knife/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to GitHub Package Registry
+      run: echo "${{ secrets.SVIAT_DOCKER_PASSWORD }}" | docker login -u "${{ secrets.SVIAT_DOCKER_USERNAME }}" --password-stdin
+    - name: Build the Docker image
+      run: cd $GITHUB_WORKFLOW && docker build --tag  sviatstetsiak/${GITHUB_WORKFLOW}:$(date +%Y-%m-%d) --tag sviatstetsiak/${GITHUB_WORKFLOW}:latest .
+    - name: Push the Docker image to the registry
+      run: docker push sviatstetsiak/${GITHUB_WORKFLOW}:$(date +%Y-%m-%d)
+    - name: Push the latest tag to the registry
+      run: docker push sviatstetsiak/${GITHUB_WORKFLOW}:latest
