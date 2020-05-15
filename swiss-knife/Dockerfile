@@ -17,7 +17,7 @@ RUN set -ex \
     nmap \
     tcptraceroute \
     vim \
-    ssh-client
+    openssh-client
 
 
 CMD ["bash"]
