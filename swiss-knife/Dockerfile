@@ -20,4 +20,4 @@ RUN set -ex \
     openssh-client
 
 
-CMD ["bash"]
+CMD ["sh"]
