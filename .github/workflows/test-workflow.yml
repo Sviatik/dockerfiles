@@ -8,7 +8,7 @@ env:
   somevar: "lastvar"
   somevar2: "${GITHUB_WORKFLOW}-test"
   somevar3: "${GITHUB_WORKFLOW}"
-  somevar4: "${{GITHUB_WORKFLOW}}"
+  somevar4: ${{GITHUB_WORKFLOW}}
 jobs:
   show:
     runs-on: ubuntu-latest
