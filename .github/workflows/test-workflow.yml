@@ -1,0 +1,26 @@
+name: Show env
+
+on:
+  push:
+    branches:
+      - '*'
+env:
+  somevar: "lastvar"
+  somevar2: "${GITHUB_WORKFLOW}-test"
+  somevar3: "${GITHUB_WORKFLOW}"
+  somevar4: ${GITHUB_WORKFLOW}
+  ImageTag: "sviatstetsiak/${GITHUB_WORKFLOW}:${GITHUB_RUN_NUMBER}"
+jobs:
+  show:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Is variable exported?
+        run: |
+          echo "#######START OUTPUT#########"
+          echo "${{ env.somevar }}"
+          echo "${{ env.somevar2 }}"
+          echo "${{ env.somevar3 }}"
+          echo "${{ env.somevar4 }}"
+          echo "${{ env.ImageTag }}"
+          echo "#######FINISH OUTPUT#########"
+          
