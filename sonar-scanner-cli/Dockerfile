@@ -141,8 +141,7 @@ RUN set -ex \
     && chown -R scanner-cli:scanner-cli "${SONAR_SCANNER_HOME}" "${SRC_PATH}" \
     && chmod -R 777 "${SRC_PATH}" "${SONAR_USER_HOME}"
 
-COPY bin /usr/bin/
-RUN chown scanner-cli:scanner-cli /usr/bin/entrypoint.sh
+COPY --chown=scanner-cli:scanner-cli bin /usr/bin/
 
 WORKDIR ${SRC_PATH}
 
