@@ -22,7 +22,7 @@ fi
 
 if [[ "$1" = 'sonar-scanner' ]]; then
   add_env_var_as_env_prop "${SONAR_LOGIN:-}" "sonar.login"
-  add_env_var_as_env_prop "${SONAR_PASSWORD:-}" "sonar.password"
+  add_env_var_as_env_prop "${SONAR_PROJECT_KEY:-}" "sonar.projectKey"
   add_env_var_as_env_prop "${SONAR_PROJECT_BASE_DIR:-}" "sonar.projectBaseDir"
   if [ ${#args[@]} -ne 0 ]; then
     set -- sonar-scanner "${args[@]}" "${@:2}"

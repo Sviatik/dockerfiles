@@ -3,7 +3,7 @@ name: sonar-scanner-cli
 on:
   push:
     paths:
-    - "${GITHUB_WORKFLOW}/*"
+    - "sonar-scanner-cli/*"
 
 env:
   ImageTag: "sviatstetsiak/${GITHUB_WORKFLOW}:${GITHUB_RUN_NUMBER}"
