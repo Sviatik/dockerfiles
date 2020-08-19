@@ -1,9 +1,9 @@
-name: sonar-scanner-cli
+name: auto-test
 
 on:
   push:
     paths:
-    - 'sonar-scanner-cli/*'
+    - 'auto-test/*'
 
 env:
   ImageTag: "sviatstetsiak/${GITHUB_WORKFLOW}:${GITHUB_RUN_NUMBER}"

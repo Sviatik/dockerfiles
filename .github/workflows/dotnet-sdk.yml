@@ -1,9 +1,9 @@
-name: sonar-scanner-cli
+name: dotnet-sdk
 
 on:
   push:
     paths:
-    - 'sonar-scanner-cli/*'
+    - 'dotnet-sdk/*'
 
 env:
   ImageTag: "sviatstetsiak/${GITHUB_WORKFLOW}:${GITHUB_RUN_NUMBER}"
