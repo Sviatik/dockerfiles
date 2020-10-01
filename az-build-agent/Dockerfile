@@ -1,3 +1,13 @@
+FROM golang:1.14.1-alpine AS gobuild-base
+RUN apk add --no-cache \
+	git \
+	make
+
+FROM gobuild-base AS acr-cli
+WORKDIR /go/src/github.com/Sviatik/acr-cli
+RUN git clone https://github.com/Sviatik/acr-cli.git .
+RUN make binaries && mv bin/acr /usr/bin/acr
+
 FROM ubuntu:16.04
 
 # To make it easier for build and release pipelines to run apt-get,
@@ -52,6 +62,7 @@ RUN apt-get install --no-install-recommends \
                    
 WORKDIR /azp
 
+COPY --from=acr-cli /usr/bin/acr /usr/bin/acr
 COPY ./start.sh .
 RUN chmod +x start.sh
 
