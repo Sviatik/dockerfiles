@@ -8,7 +8,7 @@ WORKDIR /go/src/github.com/Sviatik/acr-cli
 RUN git clone https://github.com/Sviatik/acr-cli.git .
 RUN make binaries && mv bin/acr /usr/bin/acr
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 # To make it easier for build and release pipelines to run apt-get,
 # configure apt to not require confirmation (assume the -y argument by default)
@@ -26,7 +26,7 @@ RUN apt-get update \
     && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
     && apt-get update \
     && apt-get install docker-ce \
-    && curl -L "https://github.com/docker/compose/releases/download/1.18.0/docker-compose-$(uname -s)-$(uname -m)" \
+    && curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" \
         -o /usr/local/bin/docker-compose \
     && chmod +x /usr/local/bin/docker-compose
 
@@ -42,28 +42,41 @@ RUN curl -o azcopy_v10.tar.gz https://azcopyvnext.azureedge.net/release20200124/
     && rm -f azcopy_v10.tar.gz \
     && chmod +x /usr/local/bin/azcopy
 
-# Install Azure Cli
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
 # Install kubectl
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.2/bin/linux/amd64/kubectl \
     && chmod +x ./kubectl \
     && mv ./kubectl /usr/local/bin/kubectl
 
 # ==========Install and launch Azure DevOps Agent==========
-RUN apt-get install --no-install-recommends \
-        jq \
-        git \
-        iputils-ping \
-        libcurl3 \
-        libicu55 \
-        libunwind8 \
-        netcat
-                   
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    jq \
+    git \
+    iputils-ping \
+    libcurl4 \
+    libicu60 \
+    libunwind8 \
+    netcat \
+    libssl1.0 \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
+  && rm -rf /var/lib/apt/lists/*
+
+ARG TARGETARCH=amd64
+ARG AGENT_VERSION=2.193.0
+
 WORKDIR /azp
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+      AZP_AGENTPACKAGE_URL=https://vstsagentpackage.azureedge.net/agent/${AGENT_VERSION}/vsts-agent-linux-x64-${AGENT_VERSION}.tar.gz; \
+    else \
+      AZP_AGENTPACKAGE_URL=https://vstsagentpackage.azureedge.net/agent/${AGENT_VERSION}/vsts-agent-linux-${TARGETARCH}-${AGENT_VERSION}.tar.gz; \
+    fi; \
+    curl -LsS "$AZP_AGENTPACKAGE_URL" | tar -xz
 
 COPY --from=acr-cli /usr/bin/acr /usr/bin/acr
 COPY ./start.sh .
 RUN chmod +x start.sh
 
-CMD ["./start.sh"]
+ENTRYPOINT [ "./start.sh" ]
