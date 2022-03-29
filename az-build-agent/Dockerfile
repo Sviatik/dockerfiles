@@ -48,7 +48,7 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.2/b
     && mv ./kubectl /usr/local/bin/kubectl
 
 # Install helm
-RUN curl -L https://get.helm.sh/helm-v3.8.1-linux-arm64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
+RUN curl -L https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
 
 # ==========Install and launch Azure DevOps Agent==========
 RUN apt-get update && apt-get install -y --no-install-recommends \
