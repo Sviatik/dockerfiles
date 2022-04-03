@@ -50,6 +50,10 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.2/b
 # Install helm
 RUN curl -L https://get.helm.sh/helm-v3.8.1-linux-amd64.tar.gz | tar xz && mv linux-amd64/helm /bin/helm && rm -rf linux-amd64
 
+# Install trivy
+RUN wget https://github.com/aquasecurity/trivy/releases/download/v0.25.0/trivy_0.25.0_Linux-64bit.deb \
+    dpkg -i trivy_0.25.0_Linux-64bit.deb
+
 # ==========Install and launch Azure DevOps Agent==========
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
