@@ -1,6 +1,7 @@
 name: az-build-agent
 
 on:
+  workflow_dispatch:
   push:
     paths:
     - 'az-build-agent/*'
