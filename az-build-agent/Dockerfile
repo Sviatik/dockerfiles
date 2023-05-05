@@ -57,6 +57,10 @@ RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-ke
     && apt-get update \
     && apt-get install trivy
 
+# install yq
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq \
+    && chmod +x /usr/bin/yq
+
 # ==========Install and launch Azure DevOps Agent==========
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
