@@ -8,16 +8,17 @@ WORKDIR /go/src/github.com/Sviatik/acr-cli
 RUN git clone https://github.com/Sviatik/acr-cli.git .
 RUN make binaries && mv bin/acr /usr/bin/acr
 
-FROM ubuntu:18.04
-
+FROM ubuntu:20.04
 # To make it easier for build and release pipelines to run apt-get,
 # configure apt to not require confirmation (assume the -y argument by default)
 ENV DEBIAN_FRONTEND=noninteractive
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
 # Install Docker Engine (latest stable version) and Docker Compose 
-RUN apt-get update \
-    && apt-get install \
+RUN apt-get install \
         apt-transport-https \
         ca-certificates \
         curl \
@@ -44,7 +45,7 @@ RUN curl -o azcopy_v10.tar.gz https://azcopyvnext.azureedge.net/release20200124/
     && chmod +x /usr/local/bin/azcopy
 
 # Install kubectl
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.2/bin/linux/amd64/kubectl \
+RUN curl -LO https://dl.k8s.io/release/v1.27.4/bin/linux/arm64/kubectl \
     && chmod +x ./kubectl \
     && mv ./kubectl /usr/local/bin/kubectl
 
@@ -63,31 +64,25 @@ RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 
 # ==========Install and launch Azure DevOps Agent==========
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    curl \
-    jq \
+    apt-utils \
     git \
     iputils-ping \
+    jq \
     libcurl4 \
-    libicu60 \
-    libunwind8 \
-    netcat \
+    libicu66 \
     libssl1.0 \
+    libunwind8 \
+    lsb-release \
+    netcat \
+    software-properties-common \
   && rm -rf /var/lib/apt/lists/*
 
 RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
   && rm -rf /var/lib/apt/lists/*
 
-ARG TARGETARCH=amd64
-ARG AGENT_VERSION=2.211.1
+ENV TARGETARCH=linux-x64
 
 WORKDIR /azp
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
-      AZP_AGENTPACKAGE_URL=https://vstsagentpackage.azureedge.net/agent/${AGENT_VERSION}/vsts-agent-linux-x64-${AGENT_VERSION}.tar.gz; \
-    else \
-      AZP_AGENTPACKAGE_URL=https://vstsagentpackage.azureedge.net/agent/${AGENT_VERSION}/vsts-agent-linux-${TARGETARCH}-${AGENT_VERSION}.tar.gz; \
-    fi; \
-    curl -LsS "$AZP_AGENTPACKAGE_URL" | tar -xz
 
 COPY --from=acr-cli /usr/bin/acr /usr/bin/acr
 COPY ./start.sh .
